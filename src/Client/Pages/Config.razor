@@ -1,0 +1,28 @@
+﻿@page "/config"
+@using WebApp.Shared
+@inject HttpClient Http
+
+<h1>Config</h1>
+
+@if (config == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <ul>
+        <li>Instance: @config.Instance</li>
+        <li>ClientId: @config.ClientId</li>
+        <li>Domain: @config.Domain</li>
+        <li>SignUpSignInPolicyId: @config.SignUpSignInPolicyId</li>
+	</ul>
+}
+
+@code {
+    private AzureAdB2C config;
+
+    protected override async Task OnInitializedAsync()
+    {
+        config = await Http.GetFromJsonAsync<AzureAdB2C>("Config");
+    }
+}
