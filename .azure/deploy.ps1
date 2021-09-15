@@ -15,10 +15,10 @@ Param(
     [object]$secretApiKeyValue = $null,
 
     [Parameter(Mandatory = $false)]
-    [String]$bicepFile = "bicep/azuredeploy.bicep",
+    [String]$bicepFile = "bicep/main.bicep",
 
     [Parameter(Mandatory = $true)]
-    [String]$bicepParametersFile = "azuredeploy.parameters.test.json",
+    [String]$bicepParametersFile = "main.parameters.test.json",
 
     [Parameter(Mandatory = $false)]
     [Switch]$dryRun
@@ -133,7 +133,7 @@ if ($false -eq [string]::IsNullOrEmpty($secretApiKeyValue)) {
     $parameters.parameters.Add("secretApiKey", @{ value = $secretApiKeyValue })
 }
 
-$tempParametersFile = "azuredeploy.parameters.temp.json"
+$tempParametersFile = "main.parameters.temp.json"
 if (Test-Path $tempParametersFile) {
     Remove-Item $tempParametersFile
 }
@@ -176,7 +176,7 @@ if (!$dryRun.IsPresent) {
     $output = (az deployment group create `
             -g $resourceGroup `
             --template-file $bicepFile `
-            --name "azuredeploy-$($deploymentTimestamp)" `
+            --name "deployment-$($deploymentTimestamp)" `
             --mode Incremental `
             --parameters @$tempParametersFile --query properties.outputs) 
     

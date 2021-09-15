@@ -43,7 +43,7 @@ For example:
     -environmentName "demo" `
     -secretApiKey "<s3cr3t>" `
     -bicepFile
-    -bicepParametersFile .\azuredeploy.parameters.demo.json
+    -bicepParametersFile .\main.parameters.demo.json
 ```
 
 > Remember: Delete your resources if you aren't going to be using them for a while -- it will save you a few dollars every day that you aren't using it.

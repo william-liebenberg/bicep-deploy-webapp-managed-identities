@@ -82,7 +82,7 @@ param azureAdB2c object = {
 }
 
 // Call a separate bicep file to deploy the KeyVault and secrets
-module keyVault 'keyVault.bicep' = {
+module keyVault 'modules/keyVault.bicep' = {
   name: '${projectName}-keyVault-${lastDeploymentDate}'
   scope: resourceGroup()
   params: {
@@ -94,7 +94,7 @@ module keyVault 'keyVault.bicep' = {
 }
 
 // Call a separate bicep file to deploy the attachment storage account
-module storage 'storage.bicep' = {
+module storage 'modules/storage.bicep' = {
   name: '${projectName}-storage-${lastDeploymentDate}'
   scope: resourceGroup()
   params: {
@@ -106,7 +106,7 @@ module storage 'storage.bicep' = {
   }
 }
 
-module database 'sqlDatabase.bicep' = {
+module database 'modules/sqlDatabase.bicep' = {
   name: '${projectName}-database-${lastDeploymentDate}'
   scope: resourceGroup()
   params: {
@@ -118,7 +118,7 @@ module database 'sqlDatabase.bicep' = {
   }
 }
 
-module webapp 'webApp.bicep' = {
+module webapp 'modules/webApp.bicep' = {
   name: '${projectName}-webapp-${lastDeploymentDate}'
   scope: resourceGroup()
   params: {
