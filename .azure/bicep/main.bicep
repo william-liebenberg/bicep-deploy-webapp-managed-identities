@@ -74,13 +74,6 @@ param databasePerformanceTier string = 'Basic'
 ])
 param webappPerformanceTier string = 'P1V2'
 
-param azureAdB2c object = {
-  Instance: ''
-  ClientId: ''
-  Domain: ''
-  SignUpSignInPolicyId: ''
-}
-
 // Call a separate bicep file to deploy the KeyVault and secrets
 module keyVault 'modules/keyVault.bicep' = {
   name: '${projectName}-keyVault-${lastDeploymentDate}'
@@ -130,11 +123,8 @@ module webapp 'modules/webApp.bicep' = {
     keyVaultUri: keyVault.outputs.keyVaultUri
     attachmentsBlobContainerName: storage.outputs.attachmentsBlobContainerName
     attachmentsBlobContainerId: storage.outputs.attachmentsBlobContainerId
-    azureAdB2c: azureAdB2c
   }
 }
 
 output webappName string = webapp.outputs.webappName
 output webappUrl string = webapp.outputs.webappUrl
-output b2cInstance string = azureAdB2c.Instance
-output b2cClientId string = azureAdB2c.ClientId

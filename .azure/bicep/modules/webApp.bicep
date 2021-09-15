@@ -50,20 +50,6 @@ param attachmentsBlobContainerName string
 ])
 param serverSku string = 'P1V2'
 
-param azureAdB2c object = {
-  Instance: ''
-  ClientId: ''
-  Domain: ''
-  SignUpSignInPolicyId: ''
-}
-
-param sendGridOptions object = {
-  SandBoxMod: false
-  NewUserWelcomeMessageTemplateId: ''
-  FromEmail: ''
-  FromName: ''
-}
-
 var webappName = '${projectName}-${environmentName}'
 
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-10-01' = {
@@ -128,38 +114,6 @@ resource webapp 'Microsoft.Web/sites@2021-01-01' = {
         {
           name: 'KeyVaultUri'
           value: keyVaultUri
-        }
-        {
-          name: 'AzureAdB2C__Instance'
-          value: azureAdB2c.Instance
-        }
-        {
-          name: 'AzureAdB2C__ClientId'
-          value: azureAdB2c.ClientId
-        }
-        {
-          name: 'AzureAdB2C__Domain'
-          value: azureAdB2c.Domain
-        }
-        {
-          name: 'AzureAdB2C__SignUpSignInPolicyId'
-          value: azureAdB2c.SignUpSignInPolicyId
-        }
-        {
-          name: 'SendGridOptions__SandBoxMode'
-          value: sendGridOptions.SandBoxMode
-        }
-        {
-          name: 'SendGridOptions__NewUserWelcomeMessageTemplateId'
-          value: sendGridOptions.NewUserWelcomeMessageTemplateId
-        }
-        {
-          name: 'SendGridOptions__FromEmail'
-          value: sendGridOptions.FromEmail
-        }
-        {
-          name: 'SendGridOptions__FromName'
-          value: sendGridOptions.FromName
         }
       ]
     }
