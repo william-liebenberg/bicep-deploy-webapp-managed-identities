@@ -6,11 +6,11 @@ namespace WebApp.Server.Controllers
 {
 	[ApiController]
     [Route("[controller]")]
-    public class AzureB2cConfigController : ControllerBase
+    public class ConfigController : ControllerBase
     {
 		private readonly AzureAdB2C _b2c;
 
-		public AzureB2cConfigController(IOptions<AzureAdB2C> b2c)
+		public ConfigController(IOptions<AzureAdB2C> b2c)
         {
             _b2c = b2c.Value;
         }
