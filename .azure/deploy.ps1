@@ -34,7 +34,7 @@ function Convert-ToDevOpsVariable {
         [object]$deploymentOutputs
     )
     $deploymentOutputs.psobject.properties | ForEach-Object {
-        Write-Host "Converting to DevOps Variable: $($_.Name): $($_.Value.value)"
+        Write-Host "🪛 Converting to DevOps Variable: $($_.Name): $($_.Value.value)"
         $vsoAttribs = "task.setvariable variable=$($variablePrefix)$($_.Name);isOutput=true";
         $var = "##vso[$vsoAttribs]$($_.Value.value)"
         Write-Host $var
@@ -97,6 +97,17 @@ function Merge-ParameterFiles {
 
     $source1.parameters = $merged
     $source1 | ConvertTo-Json -Depth 100 | Out-File -FilePath .\$outputFilename
+}
+
+Write-Host "👀 Checking important files..."
+if ($false -eq (Test-Path $bicepFile)) {
+    Write-Host "❌ The BICEP file $($bicepFile) cannot be found!" -ForegroundColor Red
+    exit 1;
+}
+
+if ($false -eq (Test-Path $bicepParametersFile)) {
+    Write-Host "❌ The BICEP Parameters file $($bicepParametersFile) cannot be found!" -ForegroundColor Red
+    exit 1;
 }
 
 # NOTE: You must have logged in via 'az login' before running this deployment
@@ -183,17 +194,18 @@ if (!$dryRun.IsPresent) {
     if ($DebugPreference -ne "SilentlyContinue") {
         Write-Host $output -ForegroundColor Cyan
     }
+
+    if (!$?) {
+        Write-Host "❌ Deploying Bicep failed... aborting!" -ForegroundColor Red
+        exit 1
+    }
     
     $deploymentOutputs = $output | ConvertFrom-Json
     
     # Convert all the BICEP Output variables to DevOps Output variables that can be reused later in the pipeline
     # Note: to reference the output variable you need to prefix with the task "name" that executed this deploy.ps1 file. 
     Convert-ToDevOpsVariable -deploymentOutputs $deploymentOutputs
-
-    if (!$?) {
-        Write-Host "❌ Deploying Bicep failed... aborting!" -ForegroundColor Red
-        exit 1
-    }
 }
 
-Write-Host "✅ Done" -ForegroundColor Green
+Write-Host
+Write-Host "✅ Completed" -ForegroundColor Green
